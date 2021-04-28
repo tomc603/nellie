@@ -5,6 +5,17 @@ import subprocess
 import time
 
 
+class SensorData(object):
+    timestamp = None
+    readings = {}
+
+    def __gt__(self, other):
+        return self.timestamp > other.timestamp
+
+    def __lt__(self, other):
+        return self.timestamp < other.timestamp
+
+
 def call_stats():
     """
 
