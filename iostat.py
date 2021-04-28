@@ -55,35 +55,6 @@ class DeviceStats(object):
                 self.flush_ticks)
         return reprstr
 
-    def sub(self, subtrahend):
-        """
-        Calculate the difference between the current values and the values supplied in new
-
-        :param subtrahend: A DeviceStats to subtract from the current
-        :type subtrahend: DeviceStats
-        :return: tuple
-        """
-        return (
-            self.timestamp - subtrahend.timestamp,
-            self.read_ios - subtrahend.read_ios,
-            self.read_merges - subtrahend.read_merges,
-            self.read_sectors - subtrahend.read_sectors,
-            self.read_ticks - subtrahend.read_ticks,
-            self.write_ios - subtrahend.write_ios,
-            self.write_merges - subtrahend.write_merges,
-            self.write_sectors - subtrahend.write_sectors,
-            self.write_ticks - subtrahend.write_ticks,
-            self.ios_progress - subtrahend.ios_progress,
-            self.total_ticks - subtrahend.total_ticks,
-            self.rq_ticks - subtrahend.rq_ticks,
-            self.discard_ios - subtrahend.discard_ios if self.discard_ios is not None else 0,
-            self.discard_merges - subtrahend.discard_merges if self.discard_merges is not None else 0,
-            self.discard_sectors - subtrahend.discard_sectors if self.discard_sectors is not None else 0,
-            self.discard_ticks - subtrahend.discard_ticks if self.discard_ticks is not None else 0,
-            self.flush_ios - subtrahend.flush_ios if self.flush_ios is not None else 0,
-            self.flush_ticks - subtrahend.flush_ticks if self.flush_ticks is not None else 0,
-        )
-
     def _parse(self, data):
         """
         Read a list of values, and place them into the proper fields
@@ -115,6 +86,63 @@ class DeviceStats(object):
             if len(data) >= 17:
                 self.flush_ios = int(data[15])
                 self.flush_ticks = int(data[16])
+
+    def list(self):
+        """
+        Return a list containing the values from DeviceStats
+
+        :return: List of values in DeviceStats
+        :rtype: list
+        """
+        return [
+            self.timestamp,
+            self.read_ios,
+            self.read_merges,
+            self.read_sectors,
+            self.read_ticks,
+            self.write_ios,
+            self.write_merges,
+            self.write_sectors,
+            self.write_ticks,
+            self.ios_progress,
+            self.total_ticks,
+            self.rq_ticks,
+            self.discard_ios if self.discard_ios is not None else 0,
+            self.discard_merges if self.discard_merges is not None else 0,
+            self.discard_sectors if self.discard_sectors is not None else 0,
+            self.discard_ticks if self.discard_ticks is not None else 0,
+            self.flush_ios if self.flush_ios is not None else 0,
+            self.flush_ticks if self.flush_ticks is not None else 0
+        ]
+
+    def sub(self, subtrahend):
+        """
+        Calculate the difference between the current values and the values supplied in new
+
+        :param subtrahend: A DeviceStats to subtract from the current
+        :type subtrahend: DeviceStats
+        :return: tuple
+        """
+        return (
+            self.timestamp - subtrahend.timestamp,
+            self.read_ios - subtrahend.read_ios,
+            self.read_merges - subtrahend.read_merges,
+            self.read_sectors - subtrahend.read_sectors,
+            self.read_ticks - subtrahend.read_ticks,
+            self.write_ios - subtrahend.write_ios,
+            self.write_merges - subtrahend.write_merges,
+            self.write_sectors - subtrahend.write_sectors,
+            self.write_ticks - subtrahend.write_ticks,
+            self.ios_progress - subtrahend.ios_progress,
+            self.total_ticks - subtrahend.total_ticks,
+            self.rq_ticks - subtrahend.rq_ticks,
+            self.discard_ios - subtrahend.discard_ios if self.discard_ios is not None else 0,
+            self.discard_merges - subtrahend.discard_merges if self.discard_merges is not None else 0,
+            self.discard_sectors - subtrahend.discard_sectors if self.discard_sectors is not None else 0,
+            self.discard_ticks - subtrahend.discard_ticks if self.discard_ticks is not None else 0,
+            self.flush_ios - subtrahend.flush_ios if self.flush_ios is not None else 0,
+            self.flush_ticks - subtrahend.flush_ticks if self.flush_ticks is not None else 0,
+        )
 
 
 def collect_disk_stats(device, interval, iterations):
@@ -150,7 +178,7 @@ def collect_disk_stats(device, interval, iterations):
 
 def print_stats(values):
     """
-    Print the I/O stats between DeviceStats instances in values
+    Print the I/O stats between DeviceStats instances
 
     :param values: A list of DeviceStats to print
     :type values: list[DeviceStats]
@@ -158,7 +186,7 @@ def print_stats(values):
     last_stat = None
     for stat in values:
         if last_stat is None:
-            print(stat)
+            print(stat.list())
         else:
             print(stat.sub(last_stat))
         last_stat = stat
