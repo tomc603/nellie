@@ -89,12 +89,12 @@ class DeviceStats(object):
 
     def list(self):
         """
-        Return a list containing the values from DeviceStats
+        Return a tuple containing the values from DeviceStats
 
-        :return: List of values in DeviceStats
-        :rtype: list
+        :return: Tuple of values in DeviceStats
+        :rtype: tuple
         """
-        return [
+        return (
             self.timestamp,
             self.read_ios,
             self.read_merges,
@@ -113,7 +113,7 @@ class DeviceStats(object):
             self.discard_ticks if self.discard_ticks is not None else 0,
             self.flush_ios if self.flush_ios is not None else 0,
             self.flush_ticks if self.flush_ticks is not None else 0
-        ]
+        )
 
     def sub(self, subtrahend):
         """
