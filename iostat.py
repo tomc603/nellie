@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import os
-# import csv
+import csv
 import time
 
 
@@ -86,6 +86,15 @@ class DeviceStats(object):
             if len(data) >= 17:
                 self.flush_ios = int(data[15])
                 self.flush_ticks = int(data[16])
+
+    @staticmethod
+    def fields():
+        return ('timestamp', 'read ios', 'read merges', 'read sectors',
+                'read ticks', 'write ios', 'write merges',
+                'write sectors', 'write ticks', 'ios progress',
+                'total ticks', 'rq ticks', 'discard ios', 'discard merges',
+                'discard sectors', 'discard ticks', 'flush ios',
+                'flush ticks')
 
     def list(self):
         """
@@ -176,6 +185,20 @@ def collect_disk_stats(device, interval, iterations):
     return stats
 
 
+def stats_to_csv(values):
+    """
+    Write the I/O stats between DeviceStats instances to a CSV file
+
+    :param values: A list of DeviceStats to print
+    :type values: list[DeviceStats]
+    """
+    with open('device-stat.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(DeviceStats.fields())
+        for stat in values:
+            writer.writerow(stat.list())
+
+
 def print_stats(values):
     """
     Print the I/O stats between DeviceStats instances
@@ -184,6 +207,7 @@ def print_stats(values):
     :type values: list[DeviceStats]
     """
     last_stat = None
+    print(DeviceStats.fields())
     for stat in values:
         if last_stat is None:
             print(stat.list())
@@ -193,5 +217,6 @@ def print_stats(values):
 
 
 if __name__ == '__main__':
-    s = collect_disk_stats('nvme0n1', 10, 3)
-    print_stats(s)
+    s = collect_disk_stats('sda', 10, 3)
+    # print_stats(s)
+    stats_to_csv(s)
