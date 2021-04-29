@@ -1,9 +1,6 @@
-#!/usr/bin/env python3
 
 import os
-import csv
 import time
-
 
 class MemInfo(object):
     _timestamp = None
@@ -59,11 +56,11 @@ class MemInfo(object):
     def __repr__(self):
         pass
 
-    def _parse(self, data):
+    def __sub__(self, other):
         pass
 
-    def sub(self, other):
-        pass
+    def _parse(self, data):
+        self._timestamp = time.time()
 
     @property
     def timestamp(self):
@@ -228,138 +225,3 @@ class MemInfo(object):
     @property
     def direct_map_1g(self):
         return self._DirectMap1G
-
-
-class VmStat(object):
-    timestamp = None
-    nr_free_pages = None
-    nr_zone_inactive_anon = None
-    nr_zone_active_anon = None
-    nr_zone_inactive_file = None
-    nr_zone_active_file = None
-    nr_zone_unevictable = None
-    nr_zone_write_pending = None
-    nr_mlock = None
-    nr_page_table_pages = None
-    nr_kernel_stack = None
-    nr_bounce = None
-    nr_free_cma = None
-    numa_hit = None
-    numa_miss = None
-    numa_foreign = None
-    numa_interleave = None
-    numa_local = None
-    numa_other = None
-    nr_inactive_anon = None
-    nr_active_anon = None
-    nr_inactive_file = None
-    nr_active_file = None
-    nr_unevictable = None
-    nr_slab_reclaimable = None
-    nr_slab_unreclaimable = None
-    nr_isolated_anon = None
-    nr_isolated_file = None
-    workingset_nodes = None
-    workingset_refault = None
-    workingset_activate = None
-    workingset_restore = None
-    workingset_nodereclaim = None
-    nr_anon_pages = None
-    nr_mapped = None
-    nr_file_pages = None
-    nr_dirty = None
-    nr_writeback = None
-    nr_writeback_temp = None
-    nr_shmem = None
-    nr_shmem_hugepages = None
-    nr_shmem_pmdmapped = None
-    nr_file_hugepages = None
-    nr_file_pmdmapped = None
-    nr_anon_transparent_hugepages = None
-    nr_unstable = None
-    nr_vmscan_write = None
-    nr_vmscan_immediate_reclaim = None
-    nr_dirtied = None
-    nr_written = None
-    nr_kernel_misc_reclaimable = None
-    nr_dirty_threshold = None
-    nr_dirty_background_threshold = None
-    pgpgin = None
-    pgpgout = None
-    pswpin = None
-    pswpout = None
-    pgalloc_dma = None
-    pgalloc_dma32 = None
-    pgalloc_normal = None
-    pgalloc_movable = None
-    allocstall_dma = None
-    allocstall_dma32 = None
-    allocstall_normal = None
-    allocstall_movable = None
-    pgskip_dma = None
-    pgskip_dma32 = None
-    pgskip_normal = None
-    pgskip_movable = None
-    pgfree = None
-    pgactivate = None
-    pgdeactivate = None
-    pglazyfree = None
-    pgfault = None
-    pgmajfault = None
-    pglazyfreed = None
-    pgrefill = None
-    pgsteal_kswapd = None
-    pgsteal_direct = None
-    pgscan_kswapd = None
-    pgscan_direct = None
-    pgscan_direct_throttle = None
-    zone_reclaim_failed = None
-    pginodesteal = None
-    slabs_scanned = None
-    kswapd_inodesteal = None
-    kswapd_low_wmark_hit_quickly = None
-    kswapd_high_wmark_hit_quickly = None
-    pageoutrun = None
-    pgrotated = None
-    drop_pagecache = None
-    drop_slab = None
-    oom_kill = None
-    pgmigrate_success = None
-    pgmigrate_fail = None
-    compact_migrate_scanned = None
-    compact_free_scanned = None
-    compact_isolated = None
-    compact_stall = None
-    compact_fail = None
-    compact_success = None
-    compact_daemon_wake = None
-    compact_daemon_migrate_scanned = None
-    compact_daemon_free_scanned = None
-    unevictable_pgs_culled = None
-    unevictable_pgs_scanned = None
-    unevictable_pgs_rescued = None
-    unevictable_pgs_mlocked = None
-    unevictable_pgs_munlocked = None
-    unevictable_pgs_cleared = None
-    unevictable_pgs_stranded = None
-    nr_tlb_remote_flush = None
-    nr_tlb_remote_flush_received = None
-    nr_tlb_local_flush_all = None
-    nr_tlb_local_flush_one = None
-
-    def __init__(self, data=None):
-        if data is not None:
-            self._parse(data)
-
-    def __lt__(self, other):
-        if self.timestamp is not None and other.timestamp is not None:
-            return self.timestamp < other.timestamp
-
-    def __repr__(self):
-        pass
-
-    def _parse(self, data):
-        pass
-
-    def sub(self, other):
-        pass

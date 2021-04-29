@@ -3,41 +3,7 @@
 import csv
 import subprocess
 import time
-
-
-class SensorData(object):
-    timestamp = None
-    readings = {}
-
-    def __init__(self, data=None):
-        if data is not None:
-            self._parse(data)
-
-    def __gt__(self, other):
-        return self.timestamp > other.timestamp
-
-    def __lt__(self, other):
-        return self.timestamp < other.timestamp
-
-    def _parse(self, data):
-        """
-
-        :param data: Text output from ipmi sensors command
-        :type data: str
-        """
-        self.timestamp = time.time()
-
-        for line in data.splitlines():
-            columns = line.split('|')
-            label, value = columns[0].strip(), columns[1].strip()
-
-            # Clean up some known data types
-            if "." in value:
-                value = float(value)
-            elif value == "na":
-                value = 0
-
-            self.readings[label] = value
+from ipmi import sensors
 
 
 def call_stats():
@@ -68,9 +34,7 @@ def collect_stats(interval, iterations):
         iteration += 1
         start_time = time.time()
         p = call_stats()
-        # d = parse_ipmi_output(p.stdout)
-        # stats[timestamp] = d
-        d = SensorData(p.stdout)
+        d = sensors.SensorData(p.stdout)
         stats.append(d)
         runtime = time.time() - start_time
         time.sleep(max(0.0, interval - runtime))
