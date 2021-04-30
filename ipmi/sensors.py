@@ -17,6 +17,14 @@ class SensorData(object):
     def __lt__(self, other):
         return self.timestamp < other.timestamp
 
+    def __repr__(self):
+        kv_strings = []
+        for k in self.readings:
+            kv_strings.append('='.join([k, str(self.readings[k])]))
+
+        return '<{}(timestamp={}, {})>'.format(self.__class__.__name__, self.timestamp, ', '.join(kv_strings))
+        pass
+
     def _parse(self, data):
         """
 

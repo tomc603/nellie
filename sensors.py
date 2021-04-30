@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import csv
-import subprocess
 import time
 from ipmi import sensors
 
