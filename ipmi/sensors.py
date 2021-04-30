@@ -1,4 +1,5 @@
 
+import subprocess
 import time
 
 
@@ -39,3 +40,13 @@ class SensorData(object):
     @property
     def timestamp(self):
         return self._timestamp
+
+
+def collect():
+    process = subprocess.run(
+        ['ipmitool', 'sensor'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True)
+
+    return SensorData(process.stdout)

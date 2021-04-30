@@ -1,4 +1,5 @@
 
+import os
 import time
 
 
@@ -220,3 +221,11 @@ class DeviceStats(object):
             self.flush_ios if self.flush_ios is not None else 0,
             self.flush_ticks if self.flush_ticks is not None else 0
         )
+
+
+def collect(device):
+    dev_stats_path = os.path.join('/sys/block', device, 'stat')
+
+    with open(dev_stats_path, 'r') as f:
+        data = f.read().split()
+        return DeviceStats(data)

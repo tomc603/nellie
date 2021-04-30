@@ -6,22 +6,7 @@ import time
 from ipmi import sensors
 
 
-def call_stats():
-    """
-
-    :rtype subprocess.CompletedProcess
-    """
-    process = subprocess.run(
-        ['ipmitool', 'sensor'],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        universal_newlines=True)
-
-    # print(process.stderr)
-    return process
-
-
-def collect_stats(interval, iterations):
+def poll_stats(interval, iterations):
     """
 
     :return: List of SensorData objects containing readings for each iteration
@@ -33,9 +18,7 @@ def collect_stats(interval, iterations):
     while iteration < iterations:
         iteration += 1
         start_time = time.time()
-        p = call_stats()
-        d = sensors.SensorData(p.stdout)
-        stats.append(d)
+        stats.append(sensors.collect())
         runtime = time.time() - start_time
         time.sleep(max(0.0, interval - runtime))
     return stats
@@ -79,5 +62,5 @@ def stats_to_csv(stats):
 
 
 if __name__ == "__main__":
-    stats_data = collect_stats(10, 3)
+    stats_data = poll_stats(10, 3)
     stats_to_csv(stats_data)

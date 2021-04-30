@@ -595,3 +595,7 @@ class VmStat(object):
     @property
     def nr_tlb_local_flush_one(self):
         return self._nr_tlb_local_flush_one
+
+
+def collect():
+    return VmStat()
